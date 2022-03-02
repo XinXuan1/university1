@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.dao.PlansMapper">
+  <resultMap id="BaseResultMap" type="cn.entity.Plans">
+    <constructor>
+      <idArg column="id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="csid" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="dsid" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="tsid" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="pstatus" javaType="java.lang.String" jdbcType="VARCHAR" />
+    </constructor>
+    <id column="id" property="id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, csid, dsid, tsid, pstatus
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from plans
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  
+  <select id="selectPlan" parameterType="cn.entity.Plans"  resultType="map">
+	select t.tename, SUM(c.csore) AS sumxue FROM plans p, course  c,teams t WHERE p.tsid=t.id and p.csid=c.id and p.dsid=#{dsid} 
+	 <if test="tsid != null">
+        and p.tsid=#{tsid}
+      </if>
+		 GROUP BY t.tename
+  </select>
+  
+  
+  <select id="selectList1" parameterType="cn.entity.Plans"  resultMap="BaseResultMap">
+	select c.cname,c.ctype,t.tename,d.dname,p.* FROM course c,teams t,department d,plans p WHERE d.id=p.dsid and p.csid=c.id AND p.tsid=t.id and t.id=c.teid
+	 <if test="tsid != null">
+        and p.tsid=#{tsid}
+      </if>
+  </select>
+  
+  
+  <select id="selectList" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+     select p.*,c.cname,c.ctype,c.btime,c.etime,c.weeks,c.classnum,c.cplace,d.dname,t.tename,te.tname from plans p,course c,department d,teams t,teacher te where c.tid=te.id and c.id=p.csid and d.id=p.dsid and t.id=p.tsid
+    <if test="csid != null">
+        and p.csid=#{csid}
+      </if>
+      <if test="dsid != null">
+        and p.dsid=#{dsid}
+      </if>
+      <if test="tsid != null">
+        and p.tsid=#{tsid}
+      </if>
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from plans
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="cn.entity.Plans">
+    insert into plans (id, csid, dsid, 
+      tsid, pstatus)
+    values (#{id,jdbcType=INTEGER}, #{csid,jdbcType=INTEGER}, #{dsid,jdbcType=INTEGER}, 
+      #{tsid,jdbcType=INTEGER}, #{pstatus,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.entity.Plans">
+    insert into plans
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="csid != null">
+        csid,
+      </if>
+      <if test="dsid != null">
+        dsid,
+      </if>
+      <if test="tsid != null">
+        tsid,
+      </if>
+      <if test="pstatus != null">
+        pstatus,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="csid != null">
+        #{csid,jdbcType=INTEGER},
+      </if>
+      <if test="dsid != null">
+        #{dsid,jdbcType=INTEGER},
+      </if>
+      <if test="tsid != null">
+        #{tsid,jdbcType=INTEGER},
+      </if>
+      <if test="pstatus != null">
+        #{pstatus,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.entity.Plans">
+    update plans
+    <set>
+      <if test="csid != null">
+        csid = #{csid,jdbcType=INTEGER},
+      </if>
+      <if test="dsid != null">
+        dsid = #{dsid,jdbcType=INTEGER},
+      </if>
+      <if test="tsid != null">
+        tsid = #{tsid,jdbcType=INTEGER},
+      </if>
+      <if test="pstatus != null">
+        pstatus = #{pstatus,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.entity.Plans">
+    update plans
+    set csid = #{csid,jdbcType=INTEGER},
+      dsid = #{dsid,jdbcType=INTEGER},
+      tsid = #{tsid,jdbcType=INTEGER},
+      pstatus = #{pstatus,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

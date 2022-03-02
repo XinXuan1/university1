@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.dao.TeacherMapper">
+  <resultMap id="BaseResultMap" type="cn.entity.Teacher">
+    <constructor>
+      <idArg column="id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="tname" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="dsid" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="tetype" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="uid" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="authorizes" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="tmail" javaType="java.lang.String" jdbcType="VARCHAR" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, tname, dsid, tetype, uid, authorizes, tmail
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from teacher
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectByUser" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select * from teacher    where uid = #{uid,jdbcType=INTEGER}
+  </select>
+  
+  
+   <select id="selectList" parameterType="cn.entity.Teacher" resultMap="BaseResultMap">
+    select * from teacher  
+  </select>
+  
+   <select id="selectCount" parameterType="java.lang.Integer"  resultType="map">
+  select c.coname,COUNT(t.id) as num from department d,teacher t,college c WHERE t.dsid=d.id and d.coid=c.id GROUP BY c.coname
+  </select>
+  
+  
+  
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from teacher
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="cn.entity.Teacher">
+    insert into teacher (id, tname, dsid, 
+      tetype, uid, authorizes, 
+      tmail)
+    values (#{id,jdbcType=INTEGER}, #{tname,jdbcType=VARCHAR}, #{dsid,jdbcType=INTEGER}, 
+      #{tetype,jdbcType=VARCHAR}, #{uid,jdbcType=INTEGER}, #{authorizes,jdbcType=VARCHAR}, 
+      #{tmail,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.entity.Teacher">
+    insert into teacher
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="tname != null">
+        tname,
+      </if>
+      <if test="dsid != null">
+        dsid,
+      </if>
+      <if test="tetype != null">
+        tetype,
+      </if>
+      <if test="uid != null">
+        uid,
+      </if>
+      <if test="authorizes != null">
+        authorizes,
+      </if>
+      <if test="tmail != null">
+        tmail,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="tname != null">
+        #{tname,jdbcType=VARCHAR},
+      </if>
+      <if test="dsid != null">
+        #{dsid,jdbcType=INTEGER},
+      </if>
+      <if test="tetype != null">
+        #{tetype,jdbcType=VARCHAR},
+      </if>
+      <if test="uid != null">
+        #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="authorizes != null">
+        #{authorizes,jdbcType=VARCHAR},
+      </if>
+      <if test="tmail != null">
+        #{tmail,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.entity.Teacher">
+    update teacher
+    <set>
+      <if test="tname != null">
+        tname = #{tname,jdbcType=VARCHAR},
+      </if>
+      <if test="dsid != null">
+        dsid = #{dsid,jdbcType=INTEGER},
+      </if>
+      <if test="tetype != null">
+        tetype = #{tetype,jdbcType=VARCHAR},
+      </if>
+      <if test="uid != null">
+        uid = #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="authorizes != null">
+        authorizes = #{authorizes,jdbcType=VARCHAR},
+      </if>
+      <if test="tmail != null">
+        tmail = #{tmail,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.entity.Teacher">
+    update teacher
+    set tname = #{tname,jdbcType=VARCHAR},
+      dsid = #{dsid,jdbcType=INTEGER},
+      tetype = #{tetype,jdbcType=VARCHAR},
+      uid = #{uid,jdbcType=INTEGER},
+      authorizes = #{authorizes,jdbcType=VARCHAR},
+      tmail = #{tmail,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

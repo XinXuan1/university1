@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.dao.CourseMapper">
+  <resultMap id="BaseResultMap" type="cn.entity.Course">
+    <constructor>
+      <idArg column="id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="cname" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="csore" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="ctype" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="snumber" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="maxnumber" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="btime" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="etime" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="weeks" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="classnum" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="cplace" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="teid" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="tid" javaType="java.lang.Integer" jdbcType="INTEGER" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, cname, csore, ctype, snumber, maxnumber, btime, etime, weeks, classnum, cplace, 
+    teid, tid
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from course
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  
+  <select id="selectByTeacher" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select c.* from course c where c.tid = #{tid}
+  </select>
+  
+  
+   <select id="selectList" parameterType="cn.entity.Course" resultMap="BaseResultMap">
+    select c.*,t.tname from course c,teacher t where c.tid=t.id
+  </select>
+  
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from course
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="cn.entity.Course">
+    insert into course (id, cname, csore, 
+      ctype, snumber, maxnumber, 
+      btime, etime, weeks, 
+      classnum, cplace, teid, 
+      tid)
+    values (#{id,jdbcType=INTEGER}, #{cname,jdbcType=VARCHAR}, #{csore,jdbcType=INTEGER}, 
+      #{ctype,jdbcType=VARCHAR}, #{snumber,jdbcType=INTEGER}, #{maxnumber,jdbcType=INTEGER}, 
+      #{btime,jdbcType=INTEGER}, #{etime,jdbcType=INTEGER}, #{weeks,jdbcType=VARCHAR}, 
+      #{classnum,jdbcType=VARCHAR}, #{cplace,jdbcType=VARCHAR}, #{teid,jdbcType=INTEGER}, 
+      #{tid,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.entity.Course">
+    insert into course
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="cname != null">
+        cname,
+      </if>
+      <if test="csore != null">
+        csore,
+      </if>
+      <if test="ctype != null">
+        ctype,
+      </if>
+      <if test="snumber != null">
+        snumber,
+      </if>
+      <if test="maxnumber != null">
+        maxnumber,
+      </if>
+      <if test="btime != null">
+        btime,
+      </if>
+      <if test="etime != null">
+        etime,
+      </if>
+      <if test="weeks != null">
+        weeks,
+      </if>
+      <if test="classnum != null">
+        classnum,
+      </if>
+      <if test="cplace != null">
+        cplace,
+      </if>
+      <if test="teid != null">
+        teid,
+      </if>
+      <if test="tid != null">
+        tid,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="cname != null">
+        #{cname,jdbcType=VARCHAR},
+      </if>
+      <if test="csore != null">
+        #{csore,jdbcType=INTEGER},
+      </if>
+      <if test="ctype != null">
+        #{ctype,jdbcType=VARCHAR},
+      </if>
+      <if test="snumber != null">
+        #{snumber,jdbcType=INTEGER},
+      </if>
+      <if test="maxnumber != null">
+        #{maxnumber,jdbcType=INTEGER},
+      </if>
+      <if test="btime != null">
+        #{btime,jdbcType=INTEGER},
+      </if>
+      <if test="etime != null">
+        #{etime,jdbcType=INTEGER},
+      </if>
+      <if test="weeks != null">
+        #{weeks,jdbcType=VARCHAR},
+      </if>
+      <if test="classnum != null">
+        #{classnum,jdbcType=VARCHAR},
+      </if>
+      <if test="cplace != null">
+        #{cplace,jdbcType=VARCHAR},
+      </if>
+      <if test="teid != null">
+        #{teid,jdbcType=INTEGER},
+      </if>
+      <if test="tid != null">
+        #{tid,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.entity.Course">
+    update course
+    <set>
+      <if test="cname != null">
+        cname = #{cname,jdbcType=VARCHAR},
+      </if>
+      <if test="csore != null">
+        csore = #{csore,jdbcType=INTEGER},
+      </if>
+      <if test="ctype != null">
+        ctype = #{ctype,jdbcType=VARCHAR},
+      </if>
+      <if test="snumber != null">
+        snumber = #{snumber,jdbcType=INTEGER},
+      </if>
+      <if test="maxnumber != null">
+        maxnumber = #{maxnumber,jdbcType=INTEGER},
+      </if>
+      <if test="btime != null">
+        btime = #{btime,jdbcType=INTEGER},
+      </if>
+      <if test="etime != null">
+        etime = #{etime,jdbcType=INTEGER},
+      </if>
+      <if test="weeks != null">
+        weeks = #{weeks,jdbcType=VARCHAR},
+      </if>
+      <if test="classnum != null">
+        classnum = #{classnum,jdbcType=VARCHAR},
+      </if>
+      <if test="cplace != null">
+        cplace = #{cplace,jdbcType=VARCHAR},
+      </if>
+      <if test="teid != null">
+        teid = #{teid,jdbcType=INTEGER},
+      </if>
+      <if test="tid != null">
+        tid = #{tid,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.entity.Course">
+    update course
+    set cname = #{cname,jdbcType=VARCHAR},
+      csore = #{csore,jdbcType=INTEGER},
+      ctype = #{ctype,jdbcType=VARCHAR},
+      snumber = #{snumber,jdbcType=INTEGER},
+      maxnumber = #{maxnumber,jdbcType=INTEGER},
+      btime = #{btime,jdbcType=INTEGER},
+      etime = #{etime,jdbcType=INTEGER},
+      weeks = #{weeks,jdbcType=VARCHAR},
+      classnum = #{classnum,jdbcType=VARCHAR},
+      cplace = #{cplace,jdbcType=VARCHAR},
+      teid = #{teid,jdbcType=INTEGER},
+      tid = #{tid,jdbcType=INTEGER}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

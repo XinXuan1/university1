@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.dao.ZhibiaoMapper">
+  <resultMap id="BaseResultMap" type="cn.entity.Zhibiao">
+    <constructor>
+      <idArg column="id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="sid" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="fenlv" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="ftype" javaType="java.lang.String" jdbcType="VARCHAR" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, sid, fenlv, ftype
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from zhibiao
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectByStu" parameterType="cn.entity.Zhibiao" resultMap="BaseResultMap">
+    select z.*,s.sname  from zhibiao z,students s where z.sid=s.id and z.sid = #{sid,jdbcType=INTEGER}
+  </select>
+  <select id="unStu" parameterType="cn.entity.Zhibiao" resultMap="BaseResultMap">
+    select z.*,s.sname  from zhibiao z,students s where z.fenlv&lt;60 and z.sid=s.id and z.sid = #{sid,jdbcType=INTEGER}
+  </select>
+   <select id="selectList" parameterType="cn.entity.Zhibiao" resultMap="BaseResultMap">
+    select z.*,s.sname  from zhibiao z,students s where z.sid=s.id
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from zhibiao
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="cn.entity.Zhibiao">
+    insert into zhibiao (id, sid, fenlv, 
+      ftype)
+    values (#{id,jdbcType=INTEGER}, #{sid,jdbcType=INTEGER}, #{fenlv,jdbcType=INTEGER}, 
+      #{ftype,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="cn.entity.Zhibiao">
+    insert into zhibiao
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="sid != null">
+        sid,
+      </if>
+      <if test="fenlv != null">
+        fenlv,
+      </if>
+      <if test="ftype != null">
+        ftype,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="sid != null">
+        #{sid,jdbcType=INTEGER},
+      </if>
+      <if test="fenlv != null">
+        #{fenlv,jdbcType=INTEGER},
+      </if>
+      <if test="ftype != null">
+        #{ftype,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.entity.Zhibiao">
+    update zhibiao
+    <set>
+      <if test="sid != null">
+        sid = #{sid,jdbcType=INTEGER},
+      </if>
+      <if test="fenlv != null">
+        fenlv = #{fenlv,jdbcType=INTEGER},
+      </if>
+      <if test="ftype != null">
+        ftype = #{ftype,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.entity.Zhibiao">
+    update zhibiao
+    set sid = #{sid,jdbcType=INTEGER},
+      fenlv = #{fenlv,jdbcType=INTEGER},
+      ftype = #{ftype,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

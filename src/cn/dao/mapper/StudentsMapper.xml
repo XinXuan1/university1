@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.dao.StudentsMapper">
+  <resultMap id="BaseResultMap" type="cn.entity.Students">
+    <constructor>
+      <idArg column="id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="sname" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="studentid" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="sex" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="birth" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="place" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="uid" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="smail" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="sphone" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="pmail" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="ptele" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="myself" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="did" javaType="java.lang.Integer" jdbcType="INTEGER" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, sname, studentid, sex, birth, place, uid, smail, myself, did,sphone,pmail,ptele
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from students
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  
+  <select id="selectByUser" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select * from students    where uid = #{uid,jdbcType=INTEGER}
+  </select>
+  
+   <select id="selectCount" parameterType="java.lang.Integer"  resultType="map">
+   select d.dname,COUNT(s.id) as num from department d,students s WHERE d.id=s.did GROUP BY d.dname
+  </select>
+  
+  
+  <select id="selectByGrade" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+   select s.* FROM students s,department d,plans p,course c,teacher t where  s.did=d.id and d.id=p.dsid AND c.id=p.csid and c.tid=t.id AND c.tid=#{tid}
+  </select>
+  
+  
+  <select id="selectByD" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select s.*,d.dname from students s,department d    where s.did=d.id
+    <if test="did != null">
+        and s.did=#{did}
+      </if>
+  </select>
+  
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from students
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="cn.entity.Students">
+    insert into students (id, sname, studentid, 
+      sex, birth, place, 
+      uid, smail, myself, 
+      did,sphone,pmail,ptele)
+    values (#{id,jdbcType=INTEGER}, #{sname,jdbcType=VARCHAR}, #{studentid,jdbcType=INTEGER}, 
+      #{sex,jdbcType=VARCHAR}, #{birth,jdbcType=VARCHAR}, #{place,jdbcType=VARCHAR}, 
+      #{uid,jdbcType=INTEGER}, #{smail,jdbcType=VARCHAR}, #{myself,jdbcType=VARCHAR}, 
+      #{did,jdbcType=INTEGER}, #{sphone,jdbcType=VARCHAR}, #{pmail,jdbcType=VARCHAR}, #{ptele,jdbcType=VARCHAR},)
+  </insert>
+  <insert id="insertSelective" parameterType="cn.entity.Students">
+    insert into students
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="sname != null">
+        sname,
+      </if>
+      <if test="studentid != null">
+        studentid,
+      </if>
+      <if test="sex != null">
+        sex,
+      </if>
+      <if test="birth != null">
+        birth,
+      </if>
+      <if test="place != null">
+        place,
+      </if>
+      <if test="uid != null">
+        uid,
+      </if>
+      <if test="smail != null">
+        smail,
+      </if>
+      <if test="myself != null">
+        myself,
+      </if>
+      <if test="did != null">
+        did,
+      </if>
+      <if test="pmail != null">
+       pmail,
+      </if>
+      <if test="sphone != null">
+        sphone,
+      </if>
+      <if test="ptele != null">
+        ptele,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="sname != null">
+        #{sname,jdbcType=VARCHAR},
+      </if>
+      <if test="studentid != null">
+        #{studentid,jdbcType=INTEGER},
+      </if>
+      <if test="sex != null">
+        #{sex,jdbcType=VARCHAR},
+      </if>
+      <if test="birth != null">
+        #{birth,jdbcType=VARCHAR},
+      </if>
+      <if test="place != null">
+        #{place,jdbcType=VARCHAR},
+      </if>
+      <if test="uid != null">
+        #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="smail != null">
+        #{smail,jdbcType=VARCHAR},
+      </if>
+      <if test="myself != null">
+        #{myself,jdbcType=VARCHAR},
+      </if>
+      <if test="did != null">
+        #{did,jdbcType=INTEGER},
+      </if>
+      <if test="pmail != null">
+        #{pmail,jdbcType=VARCHAR},
+      </if>
+      <if test="sphone != null">
+        #{sphone,jdbcType=VARCHAR},
+      </if>
+      <if test="ptele != null">
+        #{ptele,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="cn.entity.Students">
+    update students
+    <set>
+      <if test="sname != null">
+        sname = #{sname,jdbcType=VARCHAR},
+      </if>
+      <if test="studentid != null">
+        studentid = #{studentid,jdbcType=INTEGER},
+      </if>
+      <if test="sex != null">
+        sex = #{sex,jdbcType=VARCHAR},
+      </if>
+      <if test="birth != null">
+        birth = #{birth,jdbcType=VARCHAR},
+      </if>
+      <if test="place != null">
+        place = #{place,jdbcType=VARCHAR},
+      </if>
+      <if test="uid != null">
+        uid = #{uid,jdbcType=INTEGER},
+      </if>
+      <if test="smail != null">
+        smail = #{smail,jdbcType=VARCHAR},
+      </if>
+      <if test="myself != null">
+        myself = #{myself,jdbcType=VARCHAR},
+      </if>
+      <if test="did != null">
+        did = #{did,jdbcType=INTEGER},
+      </if>
+        <if test="pmail != null">
+        pmail = #{pmail,jdbcType=VARCHAR},
+      </if>
+        <if test="sphone != null">
+        sphone = #{sphone,jdbcType=VARCHAR},
+      </if>
+      <if test="ptele != null">
+        ptele = #{ptele,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="cn.entity.Students">
+    update students
+    set sname = #{sname,jdbcType=VARCHAR},
+      studentid = #{studentid,jdbcType=INTEGER},
+      sex = #{sex,jdbcType=VARCHAR},
+      birth = #{birth,jdbcType=VARCHAR},
+      place = #{place,jdbcType=VARCHAR},
+      uid = #{uid,jdbcType=INTEGER},
+      smail = #{smail,jdbcType=VARCHAR},
+      myself = #{myself,jdbcType=VARCHAR},
+      did = #{did,jdbcType=INTEGER},
+      pmail = #{pmail,jdbcType=VARCHAR},
+      sphone = #{sphone,jdbcType=VARCHAR},
+      ptele = #{ptele,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>
